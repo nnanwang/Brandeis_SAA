@@ -1,0 +1,53 @@
+<head>
+    <title>Nan_Wang_CPA6</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatiple" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+</head>
+<!-- show the event details -->
+<div class="event-show">
+<h1><%= event.title %></h1>
+<div >
+  <p class="event--des"><%= event.description %></p>
+
+  <p class="event--info"><%= event.startDate.toDateString() %> - <%= event.endDate.toDateString() %>, <%= event.location %></p>
+  <!-- if online, show online event, otherwise show in person event -->
+  <% if (event.isOnline) { %>
+    <p class="event--info" class="event--info">Online Event</p>
+  <% } else { %>
+    <p class="event--info">In Person Event</p>
+  <% } %>
+  <% if (event.registrationLink) { %>
+    <p class="event--info">Registration Link: <%= event.registrationLink %></p>
+  <% } %>
+
+  <!-- show all the attendees and organizer related to the event -->
+    <h2 class="event--users">Organizer</h2>
+    <p class="event--info"><%= event.organizer.name %> (<%= event.organizer.email %>)</p>
+    <!-- check if attendees exist, otherwise show no attendees yet -->
+    <% if (event.attendees.length > 0) { %>
+      <h2 class="event--users">Attendees</h2>
+      <ul>
+        <% event.attendees.forEach(function(attendee) { %>
+          <li class="event--info"><%= attendee.name %> (<%= attendee.email %>)</li>
+        <% }); %>
+      </ul>
+    <% } else { %>
+      <p class="event--info">No attendees yet</p>
+    <% } %>
+  </div>
+  <div>
+</div>
+<!-- show link, edit link and delete button -->
+<div class="innerBody">
+  <a id="event-show-link" href="/events">View all events</a><br>
+  <a id="event-show-link" href="<%=`/events/${event._id}/edit`%>">Edit event details</a>
+  <form method="POST" action="/events/<%= event._id %>/delete?_method=DELETE" onsubmit="return confirm('Are you sure you want to delete this record?')">
+    <button class="event-delete-button" type="submit">Delete</button>
+  </form>
+</div>
+
+</div>

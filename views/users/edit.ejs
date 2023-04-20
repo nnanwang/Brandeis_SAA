@@ -1,0 +1,63 @@
+<head>
+  <title>Nan_Wang_CPA6</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatiple" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/user.css" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+</head>
+<div class="data-form">
+    <form method="POST" action="<%=`/users/${user._id}/update?_method=PUT`%>">
+      <h1>Update Your Profile</h1>
+
+        <div class="form-row">
+          <label for="inputName">Name </label>
+          <input type="text" name="name" id="inputName" placeholder="Name" value="<%= user.name %>" autofocus />
+          <label for="inputEmail">Email </label>
+          <input type="email" name="email" id="inputEmail" placeholder="Email address" value="<%= user.email %>" required />
+        </div>
+        <div class="form-row">
+          <label for="inputRole">Role </label>
+          <select name="role" id="inputRole" value="<%= user.role %>">
+            <option value="student" >Student</option>
+            <option value="alumni">Alumni</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label for="inputGraduationYear">Graduation Year </label>
+          <input type="text" name="graduationYear" id="inputGraduationYear" placeholder="e.g., 2020" pattern="\d*" value="<%= user.graduationYear %>" required />
+          <label for="inputMajor">Major </label>
+          <input type="text" name="major" id="inputMajor" value="<%= user.major %>" required />
+        </div>
+        <div class="form-row">
+          <label for="inputJob">Job </label>
+          <input type="text" name="job" id="inputJob" value="<%= user.job %>" required />
+          <label for="inputCompany">Company </label>
+          <input type="text" name="company" id="inputCompany" value="<%= user.company %>" required />
+        </div>
+        <div class="form-row">
+          <label for="inputCity">City </label>
+          <input type="text" name="city" id="inputCity" value="<%= user.city %>" required />
+          <label for="inputState">State </label>
+          <input type="text" name="state" id="inputState" value="<%= user.state %>" required />
+        </div>
+        <div class="form-row">
+          <label for="inputCountry">Country </label>
+          <input type="text" name="country" id="inputCountry" value="<%= user.country %>" required />
+          <label for="inputZipCode">Zip Code </label>
+          <input type="text" name="zipCode" id="inputZipCode" value="<%= user.zipCode %>" pattern="\d*" placeholder="Zip Code" required />
+        </div>
+        <div class="form-row">
+          <label for="inputBio">Bio</label>
+          <textarea type="text" name="bio" id="inputBio" value="<%= user.bio %>" required ></textarea>
+        </div>
+        <div class="form-row">
+          <label for="inputInterests">Interests</label>
+          <textarea type="text" name="interests" id="inputInterests" value="<%= user.interests %>" required ></textarea>
+        </div>
+
+      <button type="submit">Update</button>
+    </form>
+  </div>
+  

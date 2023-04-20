@@ -1,0 +1,46 @@
+
+  <head>
+    <title>Jobs</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatiple" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css" type="text/css">
+  </head>
+
+  <body>
+    <div class="innerBody">
+      <h1>Job Posting</h1>
+      <button onclick="location.href='/jobs/new'" id="create-event">
+        Create New Job Here!
+      </button>
+      <br>
+
+    <div>
+      <% jobs.forEach((job) => { %>
+        <div id="content">
+          <a id="event-card-title" href="/jobs/<%= job._id %>"><%= job.title %></a>
+          <% if (job.isActive) { %>
+            <p id="active">Active</p>
+          <% } else { %>
+            <p id="active">Closed</p>
+          <% } %>
+          <p  id="company"><%= job.company %>, <%= job.location %></p>
+          <p>Description: <%= job.description %></p>
+          <p>Requirements: <%= job.requirements %></p>
+          <p>Salary: <%= job.salary %><span> per year</span></p>
+          <p><%= job.contactEmail %>, 
+            <span><%= job.contactPhone %></span>
+          </p>
+          <p>Date: <%= job.postDate.toDateString() %> -  <%= job.deadlineDate.toDateString() %></>
+
+          <form method="POST" action="/jobs/<%= job._id %>?_method=DELETE" onsubmit="return confirm('Are you sure you want to delete this job listing?')">
+            <button type="submit" class="event-delete-button">Delete</button>
+          </form>
+       
+        </div>
+      <% }); %>
+
+    </div>
+  </div>
+  </body>
+

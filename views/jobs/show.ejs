@@ -1,0 +1,39 @@
+<head>
+  <title>Nan_Wang_CPA6</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatiple" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+</head>
+  <body>
+    <div class="event-show">
+      <h1><%= job.title %></h1>
+      <% if (job.isActive) { %>
+        <p class="event--des" id="active">Active</p>
+      <% } else { %>
+        <p class="event--des">Closed</p>
+      <% } %>
+      <div >
+      <p id="company"><%= job.company %></p>
+      <p class="event--info"><%= job.location %></p>
+      <p class="event--info">Description: <%= job.description %></p>
+      <p class="event--info">Requirements: <%= job.requirements %></p>
+      <p class="event--info">Salary: <%= job.salary %><span> per year</span></p>
+      <p class="event--info"><%= job.contactEmail %>, <%= job.contactPhone %></p>
+      <p class="event--info"><%= job.postDate.toDateString() %> - <%= job.deadlineDate.toDateString() %></p>
+    </div>
+    <div class="innerBody">
+      <a id="event-show-link" href="/jobs">Back to All Jobs</a><br>
+      <a id="event-show-link" href="/jobs/<%= job._id %>/edit">Edit Current Job</a>
+
+      <form method="POST" action="/jobs/<%= job._id %>?_method=DELETE" onsubmit="return confirm('Are you sure you want to delete this job listing?')">
+        <input type="hidden" name="_method" value="DELETE">
+        <button type="submit" class="event-delete-button">Delete</button>
+      </form>
+    </div>
+      
+
+  </div>
+  </body>

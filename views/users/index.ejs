@@ -1,0 +1,76 @@
+<head>
+  <title>Nan_Wang_CPA6</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatiple" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/user.css" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+</head>
+
+<!-- <form action="/users/login" method="POST">
+  <h2>Login:</h2>
+  <label for="inputEmail">Email address</label>
+  <input
+    type="email"
+    name="email"
+    id="inputEmail"
+    placeholder="Email address"
+    required
+  />
+  <label for="inputPassword">Password</label>
+  <input
+    type="password"
+    name="password"
+    id="inputPassword"
+    placeholder="Password"
+    required
+  />
+  <button type="submit">Login</button>
+</form> -->
+<div>
+<h1 class="data-form">Users Table 
+  <span> 
+    <button id="create-user" onclick="location.href='/users/new'">Create New User</button>
+  </span>
+</h1>
+
+<table class="table userTable">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Role</th>
+      <th>Major</th>
+      <th>Graduation Year</th>
+      <th>Email</th>
+      <th>Country</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% users.forEach(user => { %>
+    <tr>
+      <td><a href="<%= `/users/${user._id}`%>"><%= user.name %></a></td>
+      <td><%= user.role %></td>
+      <td><%= user.major %></td>
+      <td><%= user.graduationYear %></td>
+      <td><%= user.email %></td>
+      <td><%= user.country %></td>
+
+      <td>
+        <a href="<%=`/users/${user._id}/edit` %>"> Edit </a>
+      </td>
+      <td>
+        <a
+          href="<%= `users/${user._id}/delete?_method=DELETE` %>"
+          onclick="return confirm('Are you sure you want to delete this record?')"
+          >Delete</a
+        >
+      </td>
+    </tr>
+    <% }); %>
+  </tbody>
+
+</table>
+
+</div>
+

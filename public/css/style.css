@@ -1,0 +1,337 @@
+@media screen and (max-width: 800px) {
+
+    /* style for a smaller device (phone screen) */
+    footer,
+    header {
+        width: 100%;
+        flex: 100%;
+        flex-wrap: wrap;
+    }
+
+    body {
+        height: 100%;
+        width: 100%;
+        flex: 100%;
+        flex-wrap: wrap;
+        margin-bottom: 100px;
+    }
+
+    img {
+        width: 80%;
+    }
+
+    header {
+        font-size: 10pt;
+    }
+
+    .header-name h1 {
+        font-size: 12pt;
+    }
+
+}
+
+body {
+    margin: 0;
+    font-family: Whitney SSm A, Whitney SSm B, sans-serif;
+}
+
+header {
+    background-color: rgb(239, 245, 252);
+    display: flex;
+    align-items: center;
+}
+
+/* create a class to style the floated Brandeis logo inside the header */
+#header-img {
+    flex: 1;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    padding-left: 5rem;
+    justify-content: center;
+
+}
+
+/* create a class to style the text inside the header  */
+.header-name {
+    flex: 3;
+    color: #003478;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+}
+
+.header-name h1 {
+    font-size: 30pt;
+}
+
+.header-name p {
+    margin-top: -1rem;
+    font-size:14pt;
+    font-weight: 350;
+    color: rgb(0, 89, 191);
+}
+
+/* navbar */
+nav {
+    display: flex;
+    flex-wrap: wrap;
+    overflow: hidden;
+    padding-left: 3rem;
+    padding-right: 3rem;
+    background-color: #003478;
+    box-shadow: 0 0 0.3em 0.1em rgb(212, 212, 212);
+}
+
+/* style each navbar element */
+nav a {
+    flex: 1;
+    color: white;
+    text-align: center;
+    padding: 16px;
+    text-decoration: none;
+}
+
+/* style an animation for the navbar */
+nav a:hover {
+    color: rgb(0, 89, 191);
+    background-color: rgb(199, 224, 252);
+}
+
+/* style the main content */
+.innerBody {
+    display: block;
+    flex: 100%;
+    flex-wrap: wrap;
+    padding: 80px;
+    text-align: center;
+    /* width: 60%; */
+}
+
+.innerBody h1 {
+    font-size: 30pt;
+    color: rgb(0, 89, 191);
+    display: flex;
+    justify-content: center;
+}
+
+.innerBody h1:hover {
+    color: rgb(167, 208, 255);
+    white-space: pre-line;
+    
+}
+
+.innerBody h3 {
+    font-size: 16pt;
+    font-weight: bold;
+    display: block;
+    color:#003478
+}
+
+.innerBody p {
+    font-weight: 300;
+    line-height: 18pt;
+}
+
+/* style the link of Brandeis website */
+.innerBody a {
+    color: #003478;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 18pt;
+}
+
+.innerBody a:hover {
+    text-decoration: underline;
+    color: rgb(0, 89, 191);
+    font-weight: 500;
+}
+
+/* style event/job card */
+#content {
+    /* text-align: center; */
+    display:block;
+    /* font-weight: 300; */
+    line-height: 18pt;
+    margin:25px;
+    width: 100%;
+    color: rgb(53, 53, 53);
+    background-color: rgb(239, 245, 252);
+    border-radius: 10px;
+    padding: 50px 30px;
+    box-shadow: 0 0 10px 0 #ddd;
+}
+
+#event-card-title{
+    font-weight:bold;
+    font-size: 20pt;
+    text-decoration: underline;
+}
+
+#event-card-title:hover{
+    color:#007bff
+}
+
+#create-event{
+    margin-top: -10px;
+    margin-bottom: 30px;
+    font-size: 18px;
+    font-weight: bold;
+    background-color:white;
+    color: #007bff;
+    border: 2px #007bff solid;
+    border-radius: 5px; 
+    float: left;
+    padding: 2px 7px;
+    align-items: center;
+}
+
+#create-event:hover{
+    background-color: #007bff;
+    color: white;
+}
+
+#title {
+    color: #003478
+}
+
+/* check if is active */
+#active {
+    color: #007bff;
+    font-size: 12pt;
+}
+
+#company {
+    font-size:20pt;
+    text-align: center;
+}
+
+/* style flash text */
+.flashes {
+    justify-content: center;
+    color:#007bff;
+    text-align: center;
+}
+
+/* style the "attend" button */
+.event--attend{
+    color:#003478;
+}
+
+.event--attend button{
+    margin-top: 25px;
+    font-size: 14pt;
+    padding:3px 10px;
+    color:white;
+    border-radius: 10px;
+    background-color: #003478;
+    border:white;
+}
+
+.event--attend button:hover{
+    background-color: rgb(0, 89, 191);
+}
+
+/* helps to prevent unexpected behavior when calculating the sizes of elements */
+* {
+    box-sizing: border-box;
+}
+
+/* style the show individual event/job page */
+.event-show{
+    margin: 0 80px;
+    margin-bottom: 100px;
+    display: block;
+}
+
+.event-show h1 {
+    margin-top: 100px;
+    font-size: 30pt;
+    color: rgb(0, 89, 191);
+    display: flex;
+    justify-content: center;
+}
+
+.event--des{
+    text-align: center;
+    font-size: 16pt;
+    color:rgb(0, 89, 191);
+    margin-bottom: 15px;
+}
+
+.event--info{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    line-height: 20px;
+}
+
+.event--users{
+    justify-content: center;
+    text-align: center;
+    margin-top: 50px;
+}
+
+#event-show-link {
+    text-align: center;
+    line-height: 20pt;
+    color: #007bff;
+    font-weight: bold;
+    font-size: 14pt;
+}
+
+#event-show-link:a {
+    color:#003478;
+}
+
+.event-delete-button {
+    margin-top: 10px;
+    text-align: center;
+    line-height: 20pt;
+    background-color: #003478;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    border:white;
+}
+
+.event-delete-button:hover {
+    background-color: #007bff;
+}
+
+/* style the footer */
+footer {
+    background-color: rgb(184, 184, 184);
+    color: white;
+    font-size: 10pt;
+    padding: 3px;
+    bottom: 0;
+    width: 100%;
+    clear: both;
+    display: flex;
+    position: fixed;
+
+}
+
+footer article {
+    flex: 1;
+    text-align: center;
+}
+
+/* style the social media logos */
+.fa {
+    padding: 6px;
+    width: 10%;
+    flex: 2
+}
+
+.fa a {
+    text-align: center;
+    font-size: 12pt;
+    text-decoration: none;
+    color: rgb(0, 89, 191)
+}
+
+/* Add a hover effect */
+.fa a:hover {
+    color: rgb(115, 173, 253)
+}

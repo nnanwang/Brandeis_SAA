@@ -1,0 +1,59 @@
+<head>
+  <title>Nan_Wang_CPA6</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatiple" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/user.css" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+</head>
+
+<body>
+  <div class="data-form">
+  <h1>Edit Job</h1>
+</div>
+<div style="margin-top:-150px" class="data-form">
+  <form method="POST" action="/jobs/<%= job._id %>?_method=PUT">
+
+    <div class="form-row">
+      <label for="title">Title</label>
+      <input type="text" id="title" name="title" value="<%= job.title %>" required>
+      <!-- select if is active -->
+      <label for="isActive">Active?</label>
+      <input type="checkbox" id="isActive" name="isActive" value="true" <% if (job.isActive) { %>checked<% } %> />
+      
+    </div>
+    <div class="form-row">
+      <label for="company">Company</label>
+      <input type="text" id="company" name="company" value="<%= job.company %>" required>
+      <label for="location">Location:</label>
+      <input type="text" id="location" name="location" value="<%= job.location %>" required>
+    </div>
+    <div class="form-row">
+      <label for="description">Description:</label>
+      <textarea id="description" name="description" required><%= job.description %></textarea>
+    </div>
+    <div class="form-row">
+      <label for="requirements">Requirements:</label>
+      <textarea id="requirements" name="requirements" required><%= job.requirements %></textarea>
+    </div>
+    <div class="form-row">
+      <label for="salary">Salary</label>
+      <input type="number" id="salary" name="salary" value="<%= job.salary %>" required><span>per year</span>
+    </div>
+    <div class="form-row">
+      <label for="contactEmail">Contact Email:</label>
+      <input type="email" id="contactEmail" name="contactEmail" value="<%= job.contactEmail %>" required>
+      <label for="contactPhone">Contact Phone:</label>
+      <input type="text" id="contactPhone" name="contactPhone" value="<%= job.contactPhone %>" required>
+    </div>
+    <div class="form-row">
+      <label for="postDate">Post Date:</label>
+      <input type="date" id="postDate" name="postDate" value="<%= job.postDate.toISOString().substr(0, 10) %>" required>
+      <label for="deadlineDate">Deadline Date:</label>
+      <input type="date" id="deadlineDate" name="deadlineDate" value="<%= job.deadlineDate.toISOString().substr(0, 10) %>" required>
+    </div>
+    <button type="submit">Save</button>
+  </form>
+</div>
+</body>
+

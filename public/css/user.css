@@ -1,0 +1,159 @@
+/* style user/event/job form to allow users to create or edit*/
+.data-form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 80px;
+  }
+
+  h1 {
+    font-size: 30pt;
+    color: rgb(0, 89, 191);
+    display: flex;
+    margin-bottom: 50px;
+}
+  
+.data-form label {
+  display: inline-block;
+  margin: 5px;
+}
+
+.data-form input {
+    display: inline-block;
+    margin: 5px;
+    padding: 5px; 
+}
+
+.data-form input[type="text"],
+.data-form input[type="email"],
+.data-form input[type="password"],
+.data-form select {
+  width: 200px;
+  border-radius: 3px;
+  border: 1px solid #9c9c9c;
+  padding: 5px;
+
+}
+
+.data-form .form-row {
+  display: flex;
+  flex-wrap: wrap;
+  /* justify-content: space-between; */
+  align-items: center;
+  margin-bottom: 10px;
+}
+.form-row label {
+    display: block;
+    margin-bottom: 5px;
+  }
+
+.form-row textarea {
+    width: 100%;
+    height: 150px;
+    padding: 5px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #9c9c9c;
+}
+
+.form-row .input-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+.form-row .input-group input:first-child {
+    margin-right: 30px;
+  }
+
+  /* style button for user/event/job form */
+.data-form button[type="submit"] {
+    margin-top: 30px;
+    padding: 10px 20px;
+    background-color: #003478;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.data-form button[type="submit"]:hover {
+    background-color: #007bff ;
+}
+
+/* show all users info in a table */
+.userTable {
+    display: block;
+    padding: 0 80px;
+    margin-bottom: 150px;
+    margin-top: -60px;
+}
+
+.userTable th {
+    padding: 10px;
+    text-align: left;
+    color:#003478;
+    padding-right: 30px;
+}
+
+.userTable td {
+    padding: 5px;
+    text-align: left;
+    padding-right: 30px;
+}
+
+.user-profile {
+    display: block;
+    padding: 0 80px;
+    margin-bottom: 150px;
+    margin-top: -60px;
+}
+
+.user-profile table {
+    line-height: 20pt;
+    margin-bottom: 25px;
+}
+
+.user-profile th {
+    text-align:left;
+    color:#003478;
+    padding-right: 50px;
+}
+
+.user-profile a {
+    line-height: 20pt;
+    color: #007bff;
+    font-weight: bold;
+}
+
+.user-profile a:hover {
+    color:#003478;
+}
+
+/* style button for creating user/event/job */
+#create-user{
+    margin-right: 750px; 
+    font-size: 18px;
+    font-weight: bold;
+    background-color:white;
+    color: #007bff;
+    border: 2px #007bff solid;
+    border-radius: 5px; 
+    float: left;
+    padding: 2px 7px;
+    align-items: center;
+    
+}
+
+#create-user:hover{
+    background-color: #007bff;
+    color: white;
+}
+
+@media screen and (max-width: 600px) {
+    .data-form label {
+        min-width: 100px;
+    }
+}

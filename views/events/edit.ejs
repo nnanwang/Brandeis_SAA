@@ -1,0 +1,85 @@
+<head>
+    <title>Nan_Wang_CPA6</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatiple" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/user.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  </head>
+  
+  <body>
+    <div class="data-form">
+      <h1>Edit Event</h1>
+    </div>
+  
+    <div class="data-form">
+      <div style="margin-top:-150px">
+        <div class="form-row">
+          <form method="POST" action="/events/<%= event._id %>?_method=PUT">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" value="<%= event.title %>" required />
+          </div>
+  
+          <div class="form-row">
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" required><%= event.description %></textarea>
+          </div>
+  
+          <div class="form-row">
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" value="<%= event.location %>" required />
+          </div>
+  
+          <div class="form-row">
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate" name="startDate" value="<%= event.startDate.toISOString().substr(0, 10) %>" required />
+          </div>
+  
+          <div class="form-row">
+            <label for="endDate">End Date:</label>
+            <input type="date" id="endDate" name="endDate" value="<%= event.endDate.toISOString().substr(0, 10) %>" required />
+          </div>
+  
+          <div class="form-row">
+            <label for="isOnline">Online Event:</label>
+            <input type="checkbox" id="isOnline" name="isOnline" <% if (event.isOnline) { %>checked<% } %> />
+          </div>
+  
+          <div class="form-row">
+            <label for="registrationLink">Registration Link:</label>
+            <input type="text" id="registrationLink" name="registrationLink" value="<%= event.registrationLink %>" />
+          </div>
+  
+          <div class="form-row">
+            <label for="organizer">Organizer:</label>
+            <select id="organizer" name="organizer" required>
+              <% users.forEach(function (user) { %>
+              <option value="<%= user._id %>" <% if (event.organizer._id.equals(user._id)) { %>selected<% } %>>
+                <%= user.name %>, <%= user.email %>
+              </option>
+              <% }); %>
+            </select>
+          </div>
+  
+          <div class="form-row">
+            <label for="attendees">Attendees:</label>
+            <select multiple id="attendees" name="attendees">
+              <% users.forEach(function (user) { %>
+                <option value="<%= user._id %>" 
+                  <% if (event.attendees.find((attendee) => attendee._id.equals(user._id))) { %>selected<% } %>
+                >
+                  <%= user.name %>, <%= user.email %>
+                </option>
+              <% }); %>
+            </select>
+          </div>
+          
+
+          <div class="form-row">
+             <button type="submit">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+  </body>
+  

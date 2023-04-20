@@ -1,0 +1,54 @@
+<head>
+    <title>Nan_Wang_CPA6</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatiple" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+</head>
+                
+<div class="innerBody" id="event-background"> 
+
+  <h1>Events At Brandeis University</h1>
+
+  <button onclick="location.href='/events/new'" id="create-event">
+    Create New Event Here!
+  </button>
+
+  <br>
+<article>
+
+  <!-- read event data from the database and display it in the view -->
+<% events.forEach((ev) => { %>
+  <div >
+    <div id="content">
+      <!-- click to see the detailed information of the event -->
+      <a id="event-card-title" href="/events/<%= ev._id %>"><%= ev.title %></a>
+      <p ><%= ev.description %></p>
+      <p>Date: <%= ev.startDate.toDateString() %> - <%= ev.endDate.toDateString() %></p>
+      <p>Location: <%= ev.location %></p>
+      <p>Oganizer: <%= ev.organizer?.name %>, <%= ev.organizer?.email %></p>
+      <p>Is Online?: <%= ev.isOnline%></p>
+      <p>Registration Link: <%= ev.registrationLink %></p>
+    <!-- select email if want to attend this event -->
+      <form method="POST" class="event--attend" action="/events/<%= ev._id %>/attend">
+        <div class="form-group">
+          <label for="email">Enter your email to attend this event:</label>
+          <input type="email" name="email" class="form-control" id="email" required>
+        </div>
+        <button type="submit" >Attend Event</button>
+      </form>
+
+    </div>
+  </div>
+
+<% }); %>
+</article>
+
+</div> 
+
+
+  
+  
+
