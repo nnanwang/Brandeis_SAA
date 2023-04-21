@@ -49,7 +49,7 @@ router.use(
   expressSession({
     secret: "secret_passcode",
     cookie: {
-      maxAge: 40000,
+      maxAge: 40000, 
     },
     resave: false,
     saveUninitialized: false,
