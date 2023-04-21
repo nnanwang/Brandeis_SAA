@@ -1,6 +1,8 @@
 # Brandeis_SAA
 The Brandeis Students and Alumni Association is a vibrant community that offers lifelong opportunities for students and alumni to stay connected to Brandeis and each other.
 
+![image](https://user-images.githubusercontent.com/74788199/233533020-7e73b541-28d7-45f6-ba50-acb0c40a95d5.png)
+
 ## App Structure
 ```
 ├── README.md
