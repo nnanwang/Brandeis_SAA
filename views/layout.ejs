@@ -1,5 +1,5 @@
 <head>
-    <title>Nan_Wang_CPA6</title>
+    <title>Nan_Wang_CPA7</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatiple" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,15 +19,24 @@
         </article>
     </header>
     <nav>
-        <a href="/">Home</a>
-        <a href="/about">About</a>
+        <a class="nav-a" href="/">Home</a>
+        <a class="nav-a" href="/about">About</a>
         <!-- show all jobs -->
-        <a href="/jobs">Jobs</a>
+        <a class="nav-a" href="/jobs">Jobs</a>
         <!-- show all events -->
-        <a href="/events">Events</a>
-        <a href="/contact">Contact</a>
+        <a class="nav-a" href="/events">Events</a>
+        <a class="nav-a" href="/contact">Contact</a>
         <!-- show all users -->
-        <a href="/users">Users</a>
+        <a class="nav-a" href="/users">Users</a>
+        <!-- sign in and sign up buttons -->
+        <% if (loggedIn) { %> 
+            <a class="nav-a nav-login" href="<%= `/users/${currentUser._id}`%>">Hi, <%= currentUser.name %>!</a>
+            <a href="/users/logout"><button class="nav-button">Logout</button></a>
+        <% } else { %>
+            <a href="/users/login"><button class="nav-button">Sign In</button></a>
+            <a href="/users/new"><button class="nav-button">Sign Up</button></a>
+        <% } %>
+
     </nav>
     <div class="flashes">
         <% if (flashMessages) { %> <% if (flashMessages.success) { %>

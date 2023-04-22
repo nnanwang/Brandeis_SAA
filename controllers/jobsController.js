@@ -1,5 +1,13 @@
 const Job = require("../models/job");
 
+// check if user is logged in, if not, redirect to login page
+const isLoggedIn = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  req.flash('error', 'You must be logged in to do that.');
+  res.redirect('/users/login');
+}
 // Define a function to extract the parameters for a new Job object from the request body
 const getJobParams = (body) => {
   return {
@@ -41,7 +49,7 @@ module.exports = {
   },
 
   // Create a new job
-  create: (req, res, next) => {
+  create: [isLoggedIn, (req, res, next) => {
     Job.create({
       title: req.body.title,
       company: req.body.company,
@@ -65,7 +73,7 @@ module.exports = {
         console.log(`Error creating job: ${error.message}`);
         next(error);
       });
-  },
+  }],
 
   // Redirect to the URL specified in res.locals.redirect or move to the next middleware
   redirectView: (req, res, next) => {
@@ -93,7 +101,7 @@ module.exports = {
   },
 
     // Render the job edit form
-  edit: (req, res, next) => {
+  edit: [isLoggedIn, (req, res, next) => {
     const jobId = req.params.id;
     Job.findById(jobId)
       .then((job) => {
@@ -103,10 +111,10 @@ module.exports = {
         console.log(`Error fetching job by ID: ${error.message}`);
         next(error);
       });
-  },
+  }],
 
   // Edit the job with the specified ID
-  update: (req, res, next) => {
+  update: [isLoggedIn, (req, res, next) => {
     const jobId = req.params.id;
     Job.findByIdAndUpdate(jobId, { $set: getJobParams(req.body) })
       .then((job) => {
@@ -119,10 +127,10 @@ module.exports = {
         console.log(`Error updating job: ${error.message}`);
         next(error);
       });
-  },
+  }],
 
   // Delete the job with the specified ID
-  delete: (req, res, next) => {
+  delete: [isLoggedIn, (req, res, next) => {
     const jobId = req.params.id;
     Job.findByIdAndRemove(jobId)
       .then(() => {
@@ -133,6 +141,6 @@ module.exports = {
         console.log(`Error deleting job: ${error.message}`);
         next(error);
       });
-  },
+  }],
 };
 

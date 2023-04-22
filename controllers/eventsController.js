@@ -16,6 +16,14 @@ const getEventParams = (body) => {
   };
 };
 
+const isLoggedIn = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  req.flash('error', 'You must be logged in to do that.');
+  res.redirect('/users/login');
+}
+
 // Define a function to retrieve all users
 const getAllUsers = () => {
   return User.find({}).exec();
@@ -58,7 +66,7 @@ module.exports = {
   },
 
   // Create a new event
-  create: (req, res, next) => {
+  create: [isLoggedIn, (req, res, next) => {
     Event.create({
       title: req.body.title,
       description: req.body.description,
@@ -79,7 +87,7 @@ module.exports = {
       console.log(`Error creating event: ${error.message}`);
       next(error);
   });
-},
+}],
   
   // Redirect to the specified path or call the next middleware function
   redirectView: (req, res, next) => {
@@ -108,7 +116,7 @@ module.exports = {
   },
 
   // Add an attendee to an event
-  attend: (req, res, next) => {
+  attend: [isLoggedIn, (req, res, next) => {
     // if (!req.isAuthenticated()) {
     //   req.flash("error", "You must log in to attend events.");
     //   res.redirect("/users/login");
@@ -136,10 +144,10 @@ module.exports = {
         res.locals.redirect = `/events/${eventId}`;
         next();
       });
-    },
+    }],
   
   // Render the edit view for a specific event
-  edit: (req, res, next) => {
+  edit: [isLoggedIn, (req, res, next) => {
     const eventId = req.params.id;
   
     Event.findById(eventId)
@@ -162,10 +170,10 @@ module.exports = {
         console.log(`Error fetching event by ID: ${error.message}`);
         next(error);
       });
-  },
+  }],
 
   // Edit an event
-  update: (req, res, next) => {
+  update: [isLoggedIn, (req, res, next) => {
     let eventId = req.params.id,
       eventParams = {
         title: req.body.title,
@@ -196,10 +204,10 @@ module.exports = {
         console.log(`Error updating event by ID: ${error.message}`);
         next(error);
       });
-  },
+  }],
   
   // Delete an event
-  delete: (req, res, next) => {
+  delete: [isLoggedIn, (req, res, next) => {
     let eventId = req.params.id;
     Event.findByIdAndRemove(eventId)
       .then(() => {
@@ -210,5 +218,5 @@ module.exports = {
         console.log(`Error deleting event by ID: ${error.message}`);
         next(error);
       });
-},
+}],
 };

@@ -83,7 +83,7 @@ nav {
 }
 
 /* style each navbar element */
-nav a {
+.nav-a {
     flex: 1;
     color: white;
     text-align: center;
@@ -92,9 +92,32 @@ nav a {
 }
 
 /* style an animation for the navbar */
-nav a:hover {
+.nav-a:hover {
     color: rgb(0, 89, 191);
     background-color: rgb(199, 224, 252);
+}
+
+.nav-login {
+    color: rgb(199, 224, 252);
+    font-weight: bold;
+}
+
+.nav-login:hover {
+    color: rgb(0, 89, 191);
+    text-decoration: underline
+}
+.nav-button {
+    margin: 15px 20px;
+    background-color: rgb(199, 224, 252);
+    border-radius: 5px;
+    border:white 1pt solid;
+    color:#003478;
+    font-weight: bold;
+}
+
+.nav-button:hover {
+    background-color: #007bff;
+    color: white;
 }
 
 /* style the main content */
@@ -124,7 +147,7 @@ nav a:hover {
     font-size: 16pt;
     font-weight: bold;
     display: block;
-    color:#003478
+    color:#003478;
 }
 
 .innerBody p {
@@ -210,6 +233,7 @@ nav a:hover {
     justify-content: center;
     color:#007bff;
     text-align: center;
+    margin-top: 20px;
 }
 
 /* style the "attend" button */
