@@ -11,7 +11,7 @@
 <!-- create new event -->
 <div class="data-form">
   <form action="/events/create" method="POST">
-    <h1>Create A Event</h1>
+    <h1 class="data-form-title">Create A Event</h1>
     <div class="form-row">
       <label for="inputTitle">Title </label>
       <input type="text" name="title" id="inputTitle" placeholder="Event Title" autofocus />
@@ -42,16 +42,6 @@
       <label for="inputRegistrationLink">Registration Link </label>
       <input type="text" name="registrationLink" id="inputRegistrationLink"  required />
      
-    </div>
-    <div class="form-row">
-      <label for="organizer">Organizer</label>
-      <!-- choose user email from the user database to be the organizer of this event -->
-      <select name="organizer" id="organizer" required>
-          <% users.forEach(function(user) { %>
-            <option value="<%= user._id %>"><%= user.name %>, <%= user.email %></option>
-
-          <% }) %>
-      </select>
     </div>
     <button type="submit">Create Event</button>
   </form>

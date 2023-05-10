@@ -7,11 +7,12 @@
     padding: 80px;
   }
 
-  h1 {
+.data-form-title {
     font-size: 30pt;
     color: rgb(0, 89, 191);
     display: flex;
     margin-bottom: 50px;
+    font-weight:bold
 }
   
 .data-form label {
@@ -43,6 +44,7 @@
   align-items: center;
   margin-bottom: 10px;
 }
+
 .form-row label {
     display: block;
     margin-bottom: 5px;

@@ -1,13 +1,14 @@
 const Job = require("../models/job");
 
-// check if user is logged in, if not, redirect to login page
-const isLoggedIn = (req, res, next) => {
+// check if user is authenticated, if not, redirect to login page
+const isAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
   }
   req.flash('error', 'You must be logged in to do that.');
   res.redirect('/users/login');
 }
+
 // Define a function to extract the parameters for a new Job object from the request body
 const getJobParams = (body) => {
   return {
@@ -45,11 +46,11 @@ module.exports = {
 
   // Render the new job form
   new: (req, res, next) => {
-    res.render("jobs/new");
+    res.render("jobs/new", { job: {} });
   },
 
   // Create a new job
-  create: [isLoggedIn, (req, res, next) => {
+  create: [isAuthenticated, (req, res, next) => {
     Job.create({
       title: req.body.title,
       company: req.body.company,
@@ -62,6 +63,8 @@ module.exports = {
       postDate: req.body.postDate,
       deadlineDate: req.body.deadlineDate,
       isActive: req.body.isActive,
+      user: req.user._id // set the user field to the ID of the current user
+
     })
       .then((job) => {
         req.flash("success", "Job created successfully!");
@@ -101,46 +104,80 @@ module.exports = {
   },
 
     // Render the job edit form
-  edit: [isLoggedIn, (req, res, next) => {
+  edit: (req, res, next) => {
     const jobId = req.params.id;
     Job.findById(jobId)
       .then((job) => {
+        // check if the current user is the owner of the job
+        if (job.user && job.user.toString() !== req.user._id.toString()) {
+          req.flash("error", "You are not authorized to edit this job.");
+          return res.redirect(`/jobs/${jobId}`);
+        }
         res.render("jobs/edit", { job });
       })
       .catch((error) => {
         console.log(`Error fetching job by ID: ${error.message}`);
         next(error);
       });
-  }],
+  },
 
   // Edit the job with the specified ID
-  update: [isLoggedIn, (req, res, next) => {
+  update: (req, res, next) => {
     const jobId = req.params.id;
     Job.findByIdAndUpdate(jobId, { $set: getJobParams(req.body) })
       .then((job) => {
-        req.flash("success", "Job updated successfully!");
-        res.locals.redirect = `/jobs/${jobId}`;
-        res.locals.job = job;
-        return next();
+        // check if the current user is the owner of the job
+        if (job && job.user && job.user.toString() !== req.user._id.toString()) {
+          req.flash("error", "You are not authorized to edit this job.");
+          return res.redirect(`/jobs/${jobId}`);
+        }
+        Job.findByIdAndUpdate(jobId, { $set: getJobParams(req.body) })
+          .then((job) => {
+            req.flash("success", "Job updated successfully!");
+            res.locals.redirect = `/jobs/${jobId}`;
+            res.locals.job = job;
+            return next();
+          })
+          .catch((error) => {
+            console.log(`Error updating job: ${error.message}`);
+            next(error);
+          });
       })
       .catch((error) => {
-        console.log(`Error updating job: ${error.message}`);
+        console.log(`Error fetching job by ID: ${error.message}`);
         next(error);
       });
-  }],
+  },
 
   // Delete the job with the specified ID
-  delete: [isLoggedIn, (req, res, next) => {
+  delete: (req, res, next) => {
     const jobId = req.params.id;
-    Job.findByIdAndRemove(jobId)
-      .then(() => {
-        req.flash("success", "Job deleted successfully!");
-        res.redirect("/jobs");
+    Job.findById(jobId)
+      .then((job) => {
+        // check if the current user is the owner of the job
+        if (job.user && job.user.toString() !== req.user._id.toString()) {
+          req.flash("error", "You are not authorized to delete this job.");
+          return res.redirect(`/jobs/${jobId}`);
+        }
+        Job.findByIdAndRemove(jobId)
+          .then(() => {
+            req.flash("success", "Job deleted successfully!");
+            res.redirect("/jobs");
+          })
+          .catch((error) => {
+            console.log(`Error deleting job: ${error.message}`);
+            next(error);
+          });
       })
       .catch((error) => {
-        console.log(`Error deleting job: ${error.message}`);
+        console.log(`Error fetching job by ID: ${error.message}`);
         next(error);
       });
-  }],
-};
-
+  },
+  
+}
+  
+  
+  
+  
+  

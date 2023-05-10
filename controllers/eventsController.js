@@ -1,5 +1,7 @@
 const Event = require("../models/event");
 const User = require("../models/user");
+const httpStatus = require("http-status-codes");
+
 
 // Define a function to extract the parameters for a new Event object from the request body
 const getEventParams = (body) => {
@@ -11,22 +13,9 @@ const getEventParams = (body) => {
     endDate: body.endDate,
     isOnline: body.isOnline,
     registrationLink: body.registrationLink,
-    organizer: body.organizer,
-    attendees: [],
+    // organizer: body.organizer,
+    // attendees: [],
   };
-};
-
-const isLoggedIn = (req, res, next) => {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  req.flash('error', 'You must be logged in to do that.');
-  res.redirect('/users/login');
-}
-
-// Define a function to retrieve all users
-const getAllUsers = () => {
-  return User.find({}).exec();
 };
 
 module.exports = {
@@ -34,9 +23,9 @@ module.exports = {
   index: (req, res, next) => {
     Event.find({})
       .populate("organizer")
-      .populate("attendees")
       .then((events) => {
-        res.render("events/index", { events: events }); // Pass events as a local variable
+        res.locals.events = events;
+        next();
       })
       .catch((error) => {
         console.log(`Error fetching events: ${error.message}`);
@@ -49,34 +38,44 @@ module.exports = {
     res.render("events/index");
   },
 
+  validate: (req, res, next) => {
+    // Validate the fields in the request body
+    req.check("title", "title cannot be empty").notEmpty();
+    req.check("location", "location can not be empty").notEmpty();
+    req.check("description", "description can not be empty").notEmpty();
+
+    req.getValidationResult().then((error) => {
+      if (!error.isEmpty()) {
+        let messages = error.array().map((e) => e.msg);
+        req.skip = true;
+        req.flash("error", messages.join(" and "));
+        res.locals.redirect = "/events/new";
+        next();
+      } else {
+        next();
+      }
+    });
+  },
+
   // Render the new event form
   new: (req, res, next) => {
-  //   getAllUsers().then((users) => {
-  //     res.render('events/new', { users: users });
-  //   });
-  // },
-    User.find({})
-      .then(users => {
-        res.render("events/new", { users: users });
-      })
-      .catch(error => {
-        console.log(`Error fetching users: ${error.message}`);
-        next(error);
-      });
+    res.render("events/new");
+    // User.find({})
+    //   .then(users => {
+    //     res.render("events/new", { users: users });
+    //   })
+    //   .catch(error => {
+    //     console.log(`Error fetching users: ${error.message}`);
+    //     next(error);
+    //   });
   },
 
   // Create a new event
-  create: [isLoggedIn, (req, res, next) => {
-    Event.create({
-      title: req.body.title,
-      description: req.body.description,
-      location: req.body.location,
-      startDate: req.body.startDate,
-      endDate: req.body.endDate,
-      isOnline: req.body.isOnline,
-      registrationLink: req.body.registrationLink,
-      organizer: req.body.organizer
-    }).then(event => {
+  create: (req, res, next) => {
+    let eventParams = getEventParams(req.body);
+    eventParams.organizer = res.locals.currentUser._id;
+
+    Event.create(eventParams).then(event => {
       req.flash("success", "Event created successfully!");
       // res.locals.redirect = `/events/${event._id}`;
       res.locals.redirect = '/events';
@@ -85,9 +84,9 @@ module.exports = {
     })
       .catch(error => {
       console.log(`Error creating event: ${error.message}`);
-      next(error);
+      next();
   });
-}],
+},
   
   // Redirect to the specified path or call the next middleware function
   redirectView: (req, res, next) => {
@@ -99,10 +98,11 @@ module.exports = {
     let eventId = req.params.id;
     Event.findById(eventId)
       .populate("organizer")
-      .populate("attendees") // Populate attendees field with User objects
+      .populate("attendees")
+      .exec()
       .then((event) => {
         res.locals.event = event;
-        res.render("events/show",{ event });
+        next();
       })
       .catch((error) => {
         console.log(`Error fetching event by ID: ${error.message}`);
@@ -115,108 +115,120 @@ module.exports = {
     res.render("events/show");
   },
 
-  // Add an attendee to an event
-  attend: [isLoggedIn, (req, res, next) => {
-    // if (!req.isAuthenticated()) {
-    //   req.flash("error", "You must log in to attend events.");
-    //   res.redirect("/users/login");
-    //   return;
-    // }
-
-    const eventId = req.params.id;
-    const attendeeEmail = req.body.email;
-    
-    User.findOne({ email: attendeeEmail })
-      .then(user => {
-        // check if user exists, if not, redirect to new user page
-        if (user) {
-          return Event.findByIdAndUpdate(eventId, {
-            $push: { attendees: user._id }
-          });
-        } else {
-          req.flash("error", "You need to create a user account first.");
-          res.locals.redirect = "/users/new";
-          next();
-        }
-      })
-      .then(() => {
-        req.flash("success", "Registered successfully!");
-        res.locals.redirect = `/events/${eventId}`;
-        next();
-      });
-    }],
+  // register to attend event
+  attend: (req, res, next) => {
+    let eventId = req.params.id;
+    Event.findByIdAndUpdate(eventId, {
+      $addToSet: { attendees: res.locals.currentUser._id },
+      },
+    ).then((event) => {
+      req.flash(
+        "success",
+        `${event.title} registered successfully!`
+      );
+      res.locals.redirect = `/events`;
+      next();
+    })
+    .catch((error) => {
+      console.log(`Error : ${error.message}`);
+      next(error);
+    });
+  },
   
   // Render the edit view for a specific event
-  edit: [isLoggedIn, (req, res, next) => {
-    const eventId = req.params.id;
-  
+  edit: (req, res, next) => {
+    let eventId = req.params.id;
     Event.findById(eventId)
-      .populate("organizer")
-      .then(event => {
-        User.find()
-          .then(users => {
-            res.render("events/edit", {
-              event: event,
-              users: users,
-              title: "Edit Event"
-            });
-          })
-          .catch(error => {
-            console.log(`Error fetching users: ${error.message}`);
-            next(error);
-          });
+      .then((event) => {
+        res.render("events/edit", {
+          event: event,
+        });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(`Error fetching event by ID: ${error.message}`);
         next(error);
       });
-  }],
+  },
 
   // Edit an event
-  update: [isLoggedIn, (req, res, next) => {
+  update: (req, res, next) => {
     let eventId = req.params.id,
-      eventParams = {
-        title: req.body.title,
-        description: req.body.description,
-        location: req.body.location,
-        startDate: req.body.startDate,
-        endDate: req.body.endDate,
-        isOnline: req.body.isOnline,
-        registrationLink: req.body.registrationLink,
-        organizer: req.body.organizer,
-        attendees: req.body.attendees ? req.body.attendees : []
-      };
+      eventParams = getEventParams(req.body);
     
     Event.findByIdAndUpdate(eventId, {
       $set: eventParams,
     })
-      .then((event) => {
-        res.locals.redirect = `/events/${eventId}`;
-        res.locals.event = event;
-        return User.findById(event.organizer);
-      })
-      .then((user) => {
-          res.locals.event.organizer = user;
-          req.flash("success", "Event updated successfully!");
-          next();   
-      })
-      .catch((error) => {
-        console.log(`Error updating event by ID: ${error.message}`);
-        next(error);
-      });
-  }],
+    .then((event) => {
+      req.flash(
+        "success",
+        `${event.title}'s event updated successfully!`
+      );
+      res.locals.redirect = `/events/${eventId}`;
+      res.locals.event = event;
+      next();
+    })
+    .catch((error) => {
+      console.log(`Error updating event by ID: ${error.message}`);
+      next(error);
+    });
+  },
   
   // Delete an event
-  delete: [isLoggedIn, (req, res, next) => {
+  delete:  (req, res, next) => {
     let eventId = req.params.id;
     Event.findByIdAndRemove(eventId)
-      .then(() => {
-        req.flash("success", "Event deleted successfully!");
-        res.redirect("/events");
+      .then((event) => {
+        req.flash(
+          "success",
+          `${event.title} deleted successfully!`
+        );
+        res.locals.redirect = "/events";
+        next();
       })
       .catch((error) => {
         console.log(`Error deleting event by ID: ${error.message}`);
-        next(error);
+        next();
       });
-}],
+  },
+
+  respondJSON: (req, res) => {
+    res.json({
+      status: httpStatus.OK,
+      data: res.locals,
+    });
+  },
+  errorJSON: (error, req, res, next) => {
+    let errorObject;
+    if (error) {
+      errorObject = {
+        status: httpStatus.INTERNAL_SERVER_ERROR,
+        message: error.message,
+      };
+    } else {
+      errorObject = {
+        status: httpStatus.INTERNAL_SERVER_ERROR,
+        message: "Unknown Error.",
+      };
+    }
+    res.json(errorObject);
+  },
+  join: (req, res, next) => {
+    let eventId = req.params.id,
+      currentUser = res.locals.currentUser;
+    if (currentUser) {
+      Event.findByIdAndUpdate(eventId, {
+        $addToSet: { attendees: res.locals.currentUser._id },
+        },)
+        .then(() => {
+          res.locals.success = true;
+          req.flash('success', 'You have successfully joined the event!');
+          next();
+        })
+        .catch((error) => {
+          next(error);
+        });
+    } else {
+      next(new Error("User must log in."));
+    }
+  },
 };

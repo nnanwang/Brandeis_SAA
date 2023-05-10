@@ -1,6 +1,8 @@
 const User = require("../models/user");
 const passport = require("passport");
 const mongoose = require("mongoose");
+const randToken = require('rand-token');
+
 
 // Define a function to extract the parameters for a new User object from the request body
 const getUserParams = (body) => {
@@ -19,6 +21,7 @@ const getUserParams = (body) => {
     zipCode: body.zipCode,
     bio: body.bio,
     interests: body.interests,
+    apiToken: randToken.generate(16),
   };
 };
 module.exports = {
@@ -63,7 +66,7 @@ module.exports = {
           `Failed to create user account because: ${error.message}.`
         );
         res.locals.redirect = "/users/new";
-        next(error);
+        next();
       }
     });
   },
@@ -81,6 +84,7 @@ module.exports = {
     User.findById(userId)
       .then((user) => {
         res.locals.user = user;
+
         next();
       })
       .catch((error) => {
@@ -92,6 +96,7 @@ module.exports = {
   // render the view for a single user
   showView: (req, res) => {
     res.render("users/show");
+    
   },
 
   // Render the edit view for a single user
@@ -112,22 +117,8 @@ module.exports = {
   // Update a user by ID
   update: (req, res, next) => {
     let userId = req.params.id,
-      userParams = {
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password,
-        role: req.body.role,
-        graduationYear: req.body.graduationYear,
-        major: req.body.major,
-        job: req.body.job,
-        company: req.body.company,
-        city: req.body.city,
-        state: req.body.state,
-        country: req.body.country,
-        zipCode: req.body.zipCode,
-        bio: req.body.bio,
-        interests: req.body.interests,
-      };
+    userParams = getUserParams(req.body);
+
     User.findByIdAndUpdate(userId, {
       $set: userParams,
     })
@@ -200,4 +191,34 @@ module.exports = {
       next();
     });
   },
+
+  // check if is login
+  isLogin: (req, res, next)=>{
+    if(res.locals.loggedIn){
+      next();
+    }else{
+      req.flash("error","You need to login");
+      res.redirect("/users/login");
+    }
+  },
+
+  // get apiToken
+  verifyToken: (req, res, next) => {
+    let token = res.locals.currentUser.apiToken;
+    if (token) {
+      console.log(token)
+      User.findOne({ apiToken: token })
+        .then((user) => {
+          console.log(user)
+          if (user) next();
+          else next(new Error("Invalid API token."));
+        })
+        .catch((error) => {
+          next(new Error(error.message));
+        });
+    } else {
+      next(new Error("Invalid API token."));
+    }
+  },
 };
+
