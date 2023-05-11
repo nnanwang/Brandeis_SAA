@@ -54,18 +54,19 @@ header {
 /* create a class to style the text inside the header  */
 .header-name {
     flex: 3;
-    color: #003478;
     flex-wrap: wrap;
     justify-content: center;
     width: 100%;
 }
 
-.header-name h1 {
+.header-name-title {
     font-size: 30pt;
+    font-weight:bold;
+    color: #003478;
 }
 
-.header-name p {
-    margin-top: -1rem;
+.header-name-text {
+    margin-top: 1rem;
     font-size:14pt;
     font-weight: 350;
     color: rgb(0, 89, 191);
@@ -95,6 +96,8 @@ nav {
 .nav-a:hover {
     color: rgb(0, 89, 191);
     background-color: rgb(199, 224, 252);
+    text-decoration: none;
+
 }
 
 .nav-login {
@@ -130,17 +133,18 @@ nav {
     /* width: 60%; */
 }
 
-.innerBody h1 {
+.innerBody-title {
     font-size: 30pt;
+    font-weight:bold;
     color: rgb(0, 89, 191);
     display: flex;
     justify-content: center;
+    margin-bottom: 30px;
 }
 
-.innerBody h1:hover {
+.innerBody-title:hover {
     color: rgb(167, 208, 255);
     white-space: pre-line;
-    
 }
 
 .innerBody h3 {
@@ -221,11 +225,20 @@ nav {
 #active {
     color: #007bff;
     font-size: 12pt;
+    margin-top: 10px;
 }
 
 #company {
-    font-size:20pt;
+    font-size:16pt;
     text-align: center;
+    font-weight: 500;
+    color: #003478
+}
+
+/* style event description in event card */
+#event-des {
+    margin-top: 15px;
+    color:#007bff
 }
 
 /* style flash text */
@@ -267,11 +280,12 @@ nav {
     display: block;
 }
 
-.event-show h1 {
+.event-show-title{
     margin-top: 100px;
     font-size: 30pt;
     color: rgb(0, 89, 191);
     display: flex;
+    font-weight: bold;
     justify-content: center;
 }
 
@@ -323,7 +337,7 @@ nav {
 }
 
 /* style the footer */
-footer {
+.footer-style {
     background-color: rgb(184, 184, 184);
     color: white;
     font-size: 10pt;
@@ -336,7 +350,7 @@ footer {
 
 }
 
-footer article {
+.footer-style article {
     flex: 1;
     text-align: center;
 }
@@ -358,4 +372,89 @@ footer article {
 /* Add a hover effect */
 .fa a:hover {
     color: rgb(115, 173, 253)
+}
+
+/* style chat page */
+.chatTitle{
+    color: #007bff;
+    text-align: center;
+    justify-content: center;
+    margin-top: 100px;
+}
+
+.chat-form {
+display: flex;
+flex-wrap: wrap;
+justify-content: space-between;
+align-items: center;
+padding: 80px;
+}
+
+.chat-form h1 {
+    font-size: 30pt;
+    color: rgb(0, 89, 191);
+    display: flex;
+    margin-bottom: 50px;
+}
+
+.message.current-user {
+    background-color: #007bff;
+    color: white;
+  }
+
+.chat-form input {
+    display: inline-block;
+    /* width:100%; */
+    margin: 5px;
+    padding: 5px; 
+}
+
+.chat-form-button {
+    margin-top: 30px;
+    padding: 10px 20px;
+    background-color: #003478;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.chat-form-button:hover {
+    background-color: #007bff ;
+}
+
+
+.chat-form .form-row {
+    display: flex;
+    flex-wrap: wrap;
+    /* justify-content: space-between; */
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .form-row label {
+      display: block;
+      margin-bottom: 5px;
+    }
+  
+  .form-row .input-group {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+  .form-row .input-group input:first-child {
+      margin-right: 30px;
+    }
+
+.modal-content {
+    justify-content: center;
+    text-align: center;
+    color:#007bff;
+    padding: 20px;
+}
+
+#event-modal-label{
+    font-weight: bold;
+    color:#003478
 }

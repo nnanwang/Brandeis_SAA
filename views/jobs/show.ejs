@@ -9,7 +9,7 @@
 </head>
   <body>
     <div class="event-show">
-      <h1><%= job.title %></h1>
+      <h1 class="event-show-title "><%= job.title %></h1>
       <% if (job.isActive) { %>
         <p class="event--des" id="active">Active</p>
       <% } else { %>
@@ -20,7 +20,7 @@
       <p class="event--info"><%= job.location %></p>
       <p class="event--info">Description: <%= job.description %></p>
       <p class="event--info">Requirements: <%= job.requirements %></p>
-      <p class="event--info">Salary: <%= job.salary %><span> per year</span></p>
+      <p class="event--info">Salary: <%= job.salary %> <span>$ per year</span></p>
       <p class="event--info"><%= job.contactEmail %>, <%= job.contactPhone %></p>
       <p class="event--info"><%= job.postDate.toDateString() %> - <%= job.deadlineDate.toDateString() %></p>
     </div>

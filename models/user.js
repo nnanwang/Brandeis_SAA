@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const passportLocalMongoose = require("passport-local-mongoose");
+const randToken = require ("rand-token")
 
 // Define a model to extract the parameters for a user
 const userSchema = mongoose.Schema({
@@ -57,32 +58,19 @@ const userSchema = mongoose.Schema({
         type: String,
     },
 
-    events: [{ type: mongoose.Schema.Types.ObjectId, ref: "Event" }],
-
+    apiToken: {
+        type: String,
+    },
 
 });
 
-//   userSchema.methods.passwordComparison = function (inputPassword) {
-//     let user = this;
-//     return bcrypt.compare(inputPassword, user.password);
-//   };
+// Define a function to extract the parameters for a new User object from the request body
+userSchema.pre("save", function (next) {
+    let user = this;
+    if (!user.apiToken) user.apiToken = randToken.generate(16);
+    next();
+});
   
-// userSchema.pre("save", function (next) {
-//     let user = this;
-//     if (user.subscribedAccount === undefined) {
-//       Subscriber.findOne({ email: user.email })
-//         .then((subscriber) => {
-//           user.subscribedAccount = subscriber;
-//           next();
-//         })
-//         .catch((error) => {
-//           console.log(`Error in connecting subscriber: ${error.message}`);
-//         });
-//     } else {
-//       next();
-//     }
-// });  
-
 userSchema.plugin(passportLocalMongoose, { usernameField: "email" });
 
 

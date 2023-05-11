@@ -9,7 +9,7 @@
   
   <body>
     <div class="data-form">
-      <h1>Edit Event</h1>
+      <h1 class="data-form-title">Edit Event</h1>
     </div>
   
     <div class="data-form">
@@ -41,40 +41,18 @@
           </div>
   
           <div class="form-row">
-            <label for="isOnline">Online Event:</label>
-            <input type="checkbox" id="isOnline" name="isOnline" <% if (event.isOnline) { %>checked<% } %> />
+            <label for="inputIsOnline">Is Online? </label>
+            <select name="isOnline" id="inputIsOnline">
+              <option value="false" <%= event.isOnline ? '' : 'selected' %>>no</option>
+              <option value="true" <%= event.isOnline ? 'selected' : '' %>>yes</option>
+            </select>
           </div>
-  
+
           <div class="form-row">
             <label for="registrationLink">Registration Link:</label>
             <input type="text" id="registrationLink" name="registrationLink" value="<%= event.registrationLink %>" />
           </div>
-  
-          <div class="form-row">
-            <label for="organizer">Organizer:</label>
-            <select id="organizer" name="organizer" required>
-              <% users.forEach(function (user) { %>
-              <option value="<%= user._id %>" <% if (event.organizer._id.equals(user._id)) { %>selected<% } %>>
-                <%= user.name %>, <%= user.email %>
-              </option>
-              <% }); %>
-            </select>
-          </div>
-  
-          <div class="form-row">
-            <label for="attendees">Attendees:</label>
-            <select multiple id="attendees" name="attendees">
-              <% users.forEach(function (user) { %>
-                <option value="<%= user._id %>" 
-                  <% if (event.attendees.find((attendee) => attendee._id.equals(user._id))) { %>selected<% } %>
-                >
-                  <%= user.name %>, <%= user.email %>
-                </option>
-              <% }); %>
-            </select>
-          </div>
           
-
           <div class="form-row">
              <button type="submit">Save</button>
             </div>

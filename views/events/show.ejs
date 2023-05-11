@@ -9,7 +9,7 @@
 </head>
 <!-- show the event details -->
 <div class="event-show">
-<h1><%= event.title %></h1>
+<h1 class="event-show-title "><%= event.title %></h1>
 <div >
   <p class="event--des"><%= event.description %></p>
 
@@ -26,7 +26,9 @@
 
   <!-- show all the attendees and organizer related to the event -->
     <h2 class="event--users">Organizer</h2>
-    <p class="event--info"><%= event.organizer.name %> (<%= event.organizer.email %>)</p>
+    <% if (event.organizer) { %>
+      <p class="event--info"><%= event.organizer.name %> (<%= event.organizer.email %>)</p>
+    <% } %>
     <!-- check if attendees exist, otherwise show no attendees yet -->
     <% if (event.attendees.length > 0) { %>
       <h2 class="event--users">Attendees</h2>

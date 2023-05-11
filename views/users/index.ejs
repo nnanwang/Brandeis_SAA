@@ -8,28 +8,8 @@
 
 </head>
 
-<!-- <form action="/users/login" method="POST">
-  <h2>Login:</h2>
-  <label for="inputEmail">Email address</label>
-  <input
-    type="email"
-    name="email"
-    id="inputEmail"
-    placeholder="Email address"
-    required
-  />
-  <label for="inputPassword">Password</label>
-  <input
-    type="password"
-    name="password"
-    id="inputPassword"
-    placeholder="Password"
-    required
-  />
-  <button type="submit">Login</button>
-</form> -->
 <div>
-<h1 class="data-form">Users Table 
+<h1 class="data-form " style="color: #003478; font-weight:bold">Users Table 
   <span> 
     <button id="create-user" onclick="location.href='/users/new'">Create New User</button>
   </span>
@@ -44,6 +24,7 @@
       <th>Graduation Year</th>
       <th>Email</th>
       <th>Country</th>
+      <th>ApiToken</th>
     </tr>
   </thead>
   <tbody>
@@ -55,6 +36,7 @@
       <td><%= user.graduationYear %></td>
       <td><%= user.email %></td>
       <td><%= user.country %></td>
+      <td id="apiToken"><%= user.apiToken %></td>
 
       <td>
         <a href="<%=`/users/${user._id}/edit` %>"> Edit </a>
